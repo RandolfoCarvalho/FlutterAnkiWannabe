@@ -1,30 +1,31 @@
-import 'package:anki_wannabe/screens/create_deck_screen.dart';
-import 'package:anki_wannabe/screens/flashcard_screen.dart';
-import 'package:anki_wannabe/screens/flashcard_tab_screen.dart';
-import 'package:anki_wannabe/screens/home_screen.dart';
+import 'package:anki_wannabe/View/Home_screen.dart';
+import 'package:anki_wannabe/View/login_screen.dart';
+import 'package:anki_wannabe/View/register_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../screens/flashcard_tab_screen.dart';
-import '../screens/flashcard_screen.dart';
-import '../screens/create_deck_screen.dart'; // Nova tela para criar deck
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+  );
   runApp(MyApp());
 }
+
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Anki Wannabe',
+      title: 'Flutter Anki Clone',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/',
+      initialRoute: '/login',
       routes: {
-        //teste
-        '/': (context) => HomeScreen(), //FlashcardTabScreen(),
-        '/study': (context) => FlashcardScreen(),
-        '/createDeck': (context) => CreateDeckScreen(),
+        '/login': (context) => LoginScreen(),
+        //'/register': (context) => RegisterScreen(),
+        '/home': (context) => HomeScreen(),
       },
     );
   }
