@@ -1,6 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-
 import '../services/user_service.dart';
 
 class UserController {
@@ -30,7 +27,6 @@ class UserController {
     try {
       await _userService.deleteAccount();
     } catch (e) {
-      // Aqui você pode tratar o erro, talvez mostrando um snackbar, por exemplo.
       print('Erro ao excluir conta: $e');
     }
   }

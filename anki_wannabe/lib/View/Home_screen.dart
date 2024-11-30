@@ -1,7 +1,5 @@
 // screens/home_screen.dart
-import 'package:anki_wannabe/View/User_screen.dart';
 import 'package:flutter/material.dart';
-import '../controllers/auth_controller.dart';
 import 'login_screen.dart';
 
 class HomeScreen extends StatelessWidget {

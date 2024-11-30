@@ -263,7 +263,7 @@ void _showDeleteAccountDialog() {
         actions: [
           TextButton(
             onPressed: () {
-              Navigator.of(context).pop(); // Fecha o alerta
+              Navigator.of(context).pop();
             },
             child: Text('Cancelar'),
           ),
@@ -271,7 +271,8 @@ void _showDeleteAccountDialog() {
             onPressed: () {
               // Lógica para excluir a conta do Firebase
               _userController.deleteAccount();
-              Navigator.of(context).pop(); // Fecha o alerta
+              Navigator.of(context).pop(); 
+              Navigator.of(context).pushReplacementNamed('/login');
             },
             child: Text('Excluir'),
           ),

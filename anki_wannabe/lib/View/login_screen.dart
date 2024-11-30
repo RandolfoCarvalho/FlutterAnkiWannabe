@@ -1,5 +1,4 @@
 import 'package:anki_wannabe/Controllers/auth_controller.dart';
-import 'package:anki_wannabe/Services/firebase_service.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:anki_wannabe/View/register_screen.dart';
