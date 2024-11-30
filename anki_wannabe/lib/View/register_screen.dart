@@ -1,3 +1,4 @@
+import 'package:anki_wannabe/Controllers/auth_controller.dart';
 import 'package:anki_wannabe/Services/firebase_service.dart';
 import 'package:anki_wannabe/View/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,7 +12,7 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  final FirebaseService _auth = FirebaseService();
+  final AuthController _authController = AuthController();
 
   TextEditingController _usernameController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
@@ -149,14 +150,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
     String email = _emailController.text;
     String password = _passwordController.text;
 
-    User? user = await _auth.signUpWithEmailAndPassword(email, password);
+    User? user = await _authController.register(email, password, username);
 
     if(user != null) {
-      print("User is sucessfully created");
+      print("User is successfully created");
       Navigator.pushNamed(context, "/home"); 
     } else {
-      print("Some error occured");
+      print("Some error occurred");
     }
-
   }
 }

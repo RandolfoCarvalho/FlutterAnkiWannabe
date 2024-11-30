@@ -5,6 +5,7 @@ class UserModel {
 
   UserModel({required this.uid, required this.email, required this.username});
 
+  //Método para converter objeto Dart em um Map
   Map<String, dynamic> toMap() {
     return {
       'uid': uid,

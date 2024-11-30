@@ -5,12 +5,20 @@ class FirebaseService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
 
-Future<User?> signUpWithEmailAndPassword(String email, String password) async {
+Future<User?> signUpWithEmailAndPassword(String email, String password, String username) async {
     try {
       UserCredential credential = await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
+      
+      //informacoes adicionais (se quiser add mais no futuro)
+      if (credential.user != null) {
+        await FirebaseFirestore.instance.collection('users').doc(credential.user!.uid).set({
+          'username': username,
+          'createdAt': FieldValue.serverTimestamp(),
+        });
+      }
       return credential.user;
     } catch (e) {
       print("Erro no login: $e");

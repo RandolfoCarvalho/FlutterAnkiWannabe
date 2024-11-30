@@ -1,4 +1,5 @@
 // screens/home_screen.dart
+import 'package:anki_wannabe/View/User_screen.dart';
 import 'package:flutter/material.dart';
 import '../controllers/auth_controller.dart';
 import 'login_screen.dart';
@@ -26,7 +27,7 @@ class HomeScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Bem-vindo!',
+              'Bem-vindo ao Anki Wannabe!',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -56,10 +57,10 @@ class HomeScreen extends StatelessWidget {
                     },
                   ),
                   ListTile(
-                    leading: Icon(Icons.info),
-                    title: Text('Sobre'),
+                    leading: Icon(Icons.person),
+                    title: Text('Editar Perfil'),
                     onTap: () {
-                      // Ação para a opção "Sobre"
+                      Navigator.pushNamed(context, '/user');
                     },
                   ),
                 ],

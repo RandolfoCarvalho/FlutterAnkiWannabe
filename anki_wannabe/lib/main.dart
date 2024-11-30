@@ -1,4 +1,5 @@
-import 'package:anki_wannabe/View/Home_screen.dart';
+import 'package:anki_wannabe/View/User_screen.dart';
+import 'package:anki_wannabe/View/home_screen.dart';
 import 'package:anki_wannabe/View/login_screen.dart';
 import 'package:anki_wannabe/View/register_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
         '/login': (context) => LoginScreen(),
         //'/register': (context) => RegisterScreen(),
         '/home': (context) => HomeScreen(),
+        '/user': (context) => UserScreen(),
       },
     );
   }

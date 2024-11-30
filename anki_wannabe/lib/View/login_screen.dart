@@ -1,3 +1,4 @@
+import 'package:anki_wannabe/Controllers/auth_controller.dart';
 import 'package:anki_wannabe/Services/firebase_service.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,7 +10,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final FirebaseService _auth = FirebaseService();
+  final AuthController _authController = AuthController();
+
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -33,7 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
 
     try {
-      User? user = await _auth.signInWithEmailAndPassword(email, password);
+      User? user = await _authController.login(email, password);
 
       Navigator.of(context).pop();
 
