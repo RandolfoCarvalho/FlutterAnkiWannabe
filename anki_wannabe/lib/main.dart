@@ -1,4 +1,6 @@
 import 'package:anki_wannabe/View/User_screen.dart';
+import 'package:anki_wannabe/View/deck_cards_screen.dart';
+import 'package:anki_wannabe/View/deck_screen.dart';
 import 'package:anki_wannabe/View/home_screen.dart';
 import 'package:anki_wannabe/View/login_screen.dart';
 import 'package:anki_wannabe/View/register_screen.dart';
@@ -28,6 +30,7 @@ class MyApp extends StatelessWidget {
         //'/register': (context) => RegisterScreen(),
         '/home': (context) => HomeScreen(),
         '/user': (context) => UserScreen(),
+        '/deck': (context) => DeckScreen(),
       },
     );
   }

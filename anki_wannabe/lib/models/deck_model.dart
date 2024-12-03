@@ -1,22 +1,35 @@
-// lib/models/deck.dart
 class Deck {
-  final String id;
-  final String name;
-  final String userId;
-  final DateTime createdAt;
+  String? id;
+  String userID;
+  String name;
+  String description;
+  List<dynamic> cards; // Pode ser ajustado conforme necessidade
 
   Deck({
-    required this.id,
+    this.id,
+    required this.userID,
     required this.name,
-    required this.userId,
-    required this.createdAt,
+    this.description = '',
+    this.cards = const [],
   });
 
+  // Conversão de/para Map para facilitar manipulação no Firestore
   Map<String, dynamic> toMap() {
     return {
+      'userID': userID,
       'name': name,
-      'userId': userId,
-      'createdAt': createdAt,
+      'description': description,
+      'cards': cards,
     };
+  }
+
+  factory Deck.fromMap(Map<String, dynamic> map, String documentId) {
+    return Deck(
+      id: documentId,
+      userID: map['userID'],
+      name: map['name'],
+      description: map['description'] ?? '',
+      cards: map['cards'] ?? [],
+    );
   }
 }

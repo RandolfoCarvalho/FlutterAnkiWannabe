@@ -1,27 +1,36 @@
-class FlashCard {
-  final String id;
-  final String deckId;
-  final String front;
-  final String back;
-  final String userId;
-  final DateTime createdAt;
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-  FlashCard({
-    required this.id,
+class Card {
+  String? id;
+  String deckId;
+  String frontText;
+  String backText;
+  DateTime? createdAt;
+
+  Card({
+    this.id,
     required this.deckId,
-    required this.front,
-    required this.back,
-    required this.userId,
-    required this.createdAt,
+    required this.frontText,
+    required this.backText,
+    this.createdAt
   });
 
   Map<String, dynamic> toMap() {
     return {
       'deckId': deckId,
-      'front': front,
-      'back': back,
-      'userId': userId,
-      'createdAt': createdAt,
+      'frontText': frontText,
+      'backText': backText,
+      'createdAt': createdAt ?? DateTime.now(),
     };
+  }
+
+  factory Card.fromMap(Map<String, dynamic> map, String documentId) {
+    return Card(
+      id: documentId,
+      deckId: map['deckId'],
+      frontText: map['frontText'],
+      backText: map['backText'],
+      createdAt: (map['createdAt'] as Timestamp?)?.toDate(),
+    );
   }
 }
