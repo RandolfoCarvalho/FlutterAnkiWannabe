@@ -48,7 +48,7 @@ class UserService {
             .update({'username': username});
       }
 
-      // Reauthentication para mudanças sensíveis
+      // Reauthentication
       if ((email != null || newPassword != null) && currentPassword != null) {
         AuthCredential credential = EmailAuthProvider.credential(
           email: currentUser.email!,

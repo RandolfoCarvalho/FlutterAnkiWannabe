@@ -1,9 +1,11 @@
 import 'package:anki_wannabe/View/User_screen.dart';
+import 'package:anki_wannabe/View/deckSelection_screen.dart';
 import 'package:anki_wannabe/View/deck_cards_screen.dart';
 import 'package:anki_wannabe/View/deck_screen.dart';
 import 'package:anki_wannabe/View/home_screen.dart';
 import 'package:anki_wannabe/View/login_screen.dart';
 import 'package:anki_wannabe/View/register_screen.dart';
+import 'package:anki_wannabe/View/study_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -31,6 +33,7 @@ class MyApp extends StatelessWidget {
         '/home': (context) => HomeScreen(),
         '/user': (context) => UserScreen(),
         '/deck': (context) => DeckScreen(),
+        '/study': (context) => DeckSelectionScreen(), 
       },
     );
   }

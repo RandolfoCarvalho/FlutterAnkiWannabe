@@ -62,7 +62,7 @@ class HomeScreen extends StatelessWidget {
                     title: 'Estudar',
                     color: Colors.blue[400]!,
                     onTap: () {
-                      // Adicionar navegação para tela de estudo
+                      Navigator.pushNamed(context, '/study', arguments: 'Deck 1');
                     },
                   ),
                   _buildMenuCard(
