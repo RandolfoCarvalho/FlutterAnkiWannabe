@@ -4,7 +4,7 @@ import '../models/card_model.dart';
 class CardService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  // Criar um novo card para um deck específico
+  // post
   Future<Card> createCard({
     required String deckId,
     required String frontText,
@@ -30,7 +30,7 @@ class CardService {
     }
   }
 
-  // Buscar cards de um deck específico
+  // get
   Future<List<Card>> getDeckCards(String deckId) async {
     try {
       QuerySnapshot querySnapshot = await _firestore
@@ -48,7 +48,7 @@ class CardService {
     }
   }
 
-  // Atualizar um card
+  // put
   Future<void> updateCard(Card card) async {
     try {
       await _firestore
@@ -61,7 +61,7 @@ class CardService {
     }
   }
 
-  // Deletar um card
+  // Delete
   Future<void> deleteCard(String cardId) async {
     try {
       await _firestore.collection('cards').doc(cardId).delete();

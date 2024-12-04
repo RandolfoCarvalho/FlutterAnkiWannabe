@@ -27,10 +27,9 @@ class _StudyDeckScreenState extends State<StudyDeckScreen> {
 
   Future<void> _fetchCardsForDeck() async {
     try {
-      // Buscar cards do deck específico
       final querySnapshot = await _firestore
           .collection('cards')
-          .where('deckId', isEqualTo: widget.deckId) // Usando DocumentReference diretamente
+          .where('deckId', isEqualTo: widget.deckId)
           .get();
 
       setState(() {
@@ -65,13 +64,45 @@ class _StudyDeckScreenState extends State<StudyDeckScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('Estudando: ${widget.deckName}'),
+        elevation: 0,
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        title: Text(
+          'Estudando: ${widget.deckName}',
+          style: TextStyle(
+            color: Colors.black, 
+            fontWeight: FontWeight.bold
+          ),
+        ),
+        centerTitle: true,
       ),
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
           : cards.isEmpty
-              ? Center(child: Text('Nenhum card encontrado neste deck'))
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.credit_card_off, 
+                        size: 100, 
+                        color: Colors.grey[300]
+                      ),
+                      Text(
+                        'Nenhum card encontrado neste deck', 
+                        style: TextStyle(
+                          color: Colors.grey, 
+                          fontSize: 18
+                        ),
+                      )
+                    ],
+                  ),
+                )
               : Padding(
                   padding: EdgeInsets.all(16.0),
                   child: Column(
@@ -80,20 +111,38 @@ class _StudyDeckScreenState extends State<StudyDeckScreen> {
                       // Contagem de cards
                       Text(
                         'Card ${currentCardIndex + 1} de ${cards.length}',
-                        style: TextStyle(fontSize: 16, color: Colors.grey),
+                        style: TextStyle(
+                          fontSize: 16, 
+                          color: Colors.grey[600],
+                          fontWeight: FontWeight.w500
+                        ),
                       ),
                       SizedBox(height: 20),
 
                       // Pergunta
-                      Card(
-                        elevation: 4,
-                        child: Padding(
-                          padding: EdgeInsets.all(16.0),
-                          child: Text(
-                            cards[currentCardIndex]['frontText'] ?? 'Sem pergunta',
-                            style: TextStyle(fontSize: 24),
-                            textAlign: TextAlign.center,
+                      Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: Colors.blue[50],
+                          borderRadius: BorderRadius.circular(15),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.blue.withOpacity(0.1),
+                              spreadRadius: 2,
+                              blurRadius: 5,
+                              offset: Offset(0, 3)
+                            )
+                          ]
+                        ),
+                        padding: EdgeInsets.all(20),
+                        child: Text(
+                          cards[currentCardIndex]['frontText'] ?? 'Sem pergunta',
+                          style: TextStyle(
+                            fontSize: 24, 
+                            color: Colors.blue[900],
+                            fontWeight: FontWeight.w600
                           ),
+                          textAlign: TextAlign.center,
                         ),
                       ),
 
@@ -101,16 +150,29 @@ class _StudyDeckScreenState extends State<StudyDeckScreen> {
 
                       // Mostrar/Esconder resposta
                       if (_showAnswer)
-                        Card(
-                          color: Colors.green[50],
-                          elevation: 4,
-                          child: Padding(
-                            padding: EdgeInsets.all(16.0),
-                            child: Text(
-                              cards[currentCardIndex]['backText'] ?? 'Sem resposta',
-                              style: TextStyle(fontSize: 20, color: Colors.black87),
-                              textAlign: TextAlign.center,
+                        Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: Colors.green[50],
+                            borderRadius: BorderRadius.circular(15),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.green.withOpacity(0.1),
+                                spreadRadius: 2,
+                                blurRadius: 5,
+                                offset: Offset(0, 3)
+                              )
+                            ]
+                          ),
+                          padding: EdgeInsets.all(20),
+                          child: Text(
+                            cards[currentCardIndex]['backText'] ?? 'Sem resposta',
+                            style: TextStyle(
+                              fontSize: 20, 
+                              color: Colors.green[900],
+                              fontWeight: FontWeight.w600
                             ),
+                            textAlign: TextAlign.center,
                           ),
                         ),
 
@@ -121,13 +183,45 @@ class _StudyDeckScreenState extends State<StudyDeckScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.blue[700],
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10)
+                              ),
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 20, 
+                                vertical: 12
+                              )
+                            ),
                             onPressed: _toggleAnswer,
-                            child: Text(_showAnswer ? 'Esconder Resposta' : 'Mostrar Resposta'),
+                            child: Text(
+                              _showAnswer ? 'Esconder Resposta' : 'Mostrar Resposta',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
                           ),
                           SizedBox(width: 20),
                           ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.green[700],
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10)
+                              ),
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 20, 
+                                vertical: 12
+                              )
+                            ),
                             onPressed: _nextCard,
-                            child: Text('Próximo Card'),
+                            child: Text(
+                              'Próximo Card',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white, // Define a cor do texto como branca
+                              ),
+                            ),
                           ),
                         ],
                       ),

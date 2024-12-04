@@ -40,7 +40,7 @@ class DeckService {
     }
   }
 
-  // Buscar decks do usuário atual
+  // get
   Future<List<Deck>> getUserDecks() async {
     try {
       User? currentUser = FirebaseAuth.instance.currentUser;
@@ -63,7 +63,7 @@ class DeckService {
     }
   }
 
-  // Atualizar um deck
+  // put
   Future<void> updateDeck(Deck deck) async {
     try {
       await _firestore
@@ -76,7 +76,7 @@ class DeckService {
     }
   }
 
-  // Deletar um deck
+  // Delete
   Future<void> deleteDeck(String deckId) async {
     try {
       await _firestore.collection('decks').doc(deckId).delete();

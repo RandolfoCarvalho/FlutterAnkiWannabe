@@ -1,4 +1,5 @@
 import 'package:anki_wannabe/View/deck_cards_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../controllers/deck_controller.dart';
 import '../models/deck_model.dart';
@@ -12,7 +13,81 @@ class _DeckScreenState extends State<DeckScreen> {
   final DeckController _deckController = DeckController();
   List<Deck> _userDecks = [];
   bool _isLoading = true;
+  //form para edicao
+  void _showEditDeckDialog(Deck deck) {
+  _nameController.text = deck.name;
+  _descriptionController.text = deck.description;
 
+  showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: Text('Editar Deck'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          TextField(
+            controller: _nameController,
+            decoration: InputDecoration(
+              labelText: 'Nome do Deck',
+              hintText: 'Digite o novo nome do deck',
+            ),
+          ),
+          TextField(
+            controller: _descriptionController,
+            decoration: InputDecoration(
+              labelText: 'Descrição (Opcional)',
+              hintText: 'Digite a nova descrição do deck',
+            ),
+          ),
+        ],
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: Text('Cancelar'),
+        ),
+        ElevatedButton(
+          onPressed: () async {
+            if (_nameController.text.isNotEmpty) {
+              try {
+                 User? currentUser = FirebaseAuth.instance.currentUser;
+                if (currentUser == null) {
+                    throw Exception('Usuário não autenticado');
+                }
+                //Novo obj
+               Deck updatedDeck = Deck(
+                id: deck.id,
+                userID: currentUser.uid,
+                name: _nameController.text,
+                description: _descriptionController.text,
+              );
+
+                await _deckController.updateDeck(updatedDeck);
+
+                // Atualiza a lista de decks
+                setState(() {
+                  int index = _userDecks.indexWhere((d) => d.id == deck.id);
+                  if (index != -1) {
+                    _userDecks[index] = updatedDeck;
+                  }
+                });
+
+                _nameController.clear();
+                _descriptionController.clear();
+                Navigator.of(context).pop();
+              } catch (e) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Erro ao atualizar deck: $e')),
+                );
+              }
+            }
+          },
+          child: Text('Salvar'),
+        ),
+      ],
+    ),
+  );
+}
   final _nameController = TextEditingController();
   final _descriptionController = TextEditingController();
 
@@ -170,20 +245,31 @@ Widget _buildDeckCard(Deck deck, int index) {
           color: Colors.grey[600],
         ),
       ),
-      trailing: IconButton(
-        icon: Icon(Icons.delete, color: Colors.red),
-        onPressed: () async {
-          try {
-            await _deckController.deleteDeck(deck.id!);
-            setState(() {
-              _userDecks.removeAt(index);
-            });
-          } catch (e) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Erro ao deletar deck: $e')),
-            );
-          }
-        },
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Botão de edição
+          IconButton(
+            icon: Icon(Icons.edit, color: Colors.blue),
+            onPressed: () => _showEditDeckDialog(deck),
+          ),
+          // Botão de exclusão
+          IconButton(
+            icon: Icon(Icons.delete, color: Colors.red),
+            onPressed: () async {
+              try {
+                await _deckController.deleteDeck(deck.id!);
+                setState(() {
+                  _userDecks.removeAt(index);
+                });
+              } catch (e) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Erro ao deletar deck: $e')),
+                );
+              }
+            },
+          ),
+        ],
       ),
       onTap: () {
         Navigator.push(

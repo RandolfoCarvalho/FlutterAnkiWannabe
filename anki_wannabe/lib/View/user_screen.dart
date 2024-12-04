@@ -1,4 +1,5 @@
 // View/User_screen.dart
+import 'package:anki_wannabe/View/login_screen.dart';
 import 'package:flutter/material.dart';
 import '../controllers/user_controller.dart';
 
@@ -65,7 +66,6 @@ class _UserScreenState extends State<UserScreen> {
       });
     }
   }
-
   void _updateProfile() async {
     //se formulario valido...
     if (!_formKey.currentState!.validate()) return;
@@ -124,7 +124,7 @@ Widget build(BuildContext context) {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Formulário de edição
+          // Form de edição
           Form(
             key: _formKey,
             child: Column(
@@ -268,11 +268,14 @@ void _showDeleteAccountDialog() {
             child: Text('Cancelar'),
           ),
           TextButton(
-            onPressed: () {
-              // Lógica para excluir a conta do Firebase
-              _userController.deleteAccount();
-              Navigator.of(context).pop(); 
-              Navigator.of(context).pushReplacementNamed('/login');
+            onPressed: () async {
+              // Chama o método para excluir conta
+              await _userController.deleteAccount();
+              Navigator.of(context).pop();
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => LoginScreen()), 
+                (Route<dynamic> route) => false,
+              );
             },
             child: Text('Excluir'),
           ),
@@ -281,6 +284,7 @@ void _showDeleteAccountDialog() {
     },
   );
 }
+
   @override
   void dispose() {
     _usernameController.dispose();

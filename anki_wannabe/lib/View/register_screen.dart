@@ -1,4 +1,5 @@
 import 'package:anki_wannabe/Controllers/auth_controller.dart';
+import 'package:anki_wannabe/View/home_screen.dart';
 import 'package:anki_wannabe/View/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -145,17 +146,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   void _signUp() async {
-    String username = _usernameController.text;
-    String email = _emailController.text;
-    String password = _passwordController.text;
+  String username = _usernameController.text;
+  String email = _emailController.text;
+  String password = _passwordController.text;
 
-    User? user = await _authController.register(email, password, username);
+  User? user = await _authController.register(email, password, username);
 
-    if(user != null) {
-      print("User is successfully created");
-      Navigator.pushNamed(context, "/home"); 
-    } else {
-      print("Some error occurred");
-    }
+  if(user != null) {
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (context) => HomeScreen()), 
+      (Route<dynamic> route) => false,
+    );
+  } else {
+    print("Some error occurred");
   }
+}
+
 }

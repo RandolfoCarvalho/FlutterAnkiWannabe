@@ -42,40 +42,99 @@ class _DeckSelectionScreenState extends State<DeckSelectionScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('Meus Decks'),
+        elevation: 0,
+        backgroundColor: Colors.white,
+        title: Text(
+          'Meus Decks', 
+          style: TextStyle(
+            color: Colors.black, 
+            fontWeight: FontWeight.bold
+          ),
+        ),
+        centerTitle: true,
       ),
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
           : _userDecks.isEmpty
-              ? Center(child: Text('Nenhum deck encontrado'))
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.inbox, 
+                        size: 100, 
+                        color: Colors.grey[300]
+                      ),
+                      Text(
+                        'Nenhum deck encontrado', 
+                        style: TextStyle(
+                          color: Colors.grey, 
+                          fontSize: 18
+                        ),
+                      )
+                    ],
+                  ),
+                )
               : ListView.builder(
+                  padding: EdgeInsets.all(16),
                   itemCount: _userDecks.length,
                   itemBuilder: (context, index) {
                     final deck = _userDecks[index];
-                    return ListTile(
-                      title: Text(deck.name),
-                      onTap: () {
-                        // Navegar para a tela de estudo e passar o deckId
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => StudyDeckScreen(
-                              deckId: deck.id.toString(), 
-                              deckName: deck.name,
+                    return Container(
+                      margin: EdgeInsets.only(bottom: 12),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.2),
+                            spreadRadius: 2,
+                            blurRadius: 5,
+                            offset: Offset(0, 3)
+                          )
+                        ]
+                      ),
+                      child: ListTile(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12)
                         ),
+                        title: Text(
+                          deck.name, 
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600
                           ),
-                        );
-                      },
+                        ),
+                        trailing: Icon(
+                          Icons.arrow_forward_ios, 
+                          size: 18, 
+                          color: Colors.grey
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => StudyDeckScreen(
+                                deckId: deck.id.toString(), 
+                                deckName: deck.name,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
                     );
                   },
                 ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.blue[700],
         onPressed: () {
-          // Navegar para tela de criação de novo deck
-          Navigator.pushNamed(context, '/create-deck');
+          Navigator.pushNamed(context, '/deck');
         },
-        child: Icon(Icons.add),
+        child: Icon(
+          Icons.add, 
+          color: Colors.white
+        ),
       ),
     );
   }

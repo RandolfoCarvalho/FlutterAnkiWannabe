@@ -34,7 +34,7 @@ class HomeScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Olá, Estudante!',
+              'Olá, estudante.',
               style: TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.w600,
@@ -43,7 +43,7 @@ class HomeScreen extends StatelessWidget {
             ),
             SizedBox(height: 16),
             Text(
-              'Vamos estudar hoje?',
+              'O que vamos estudar hoje?',
               style: TextStyle(
                 fontSize: 18,
                 color: Colors.grey[600],
@@ -89,7 +89,6 @@ class HomeScreen extends StatelessWidget {
                     title: 'Configurações',
                     color: Colors.orange[400]!,
                     onTap: () {
-                      // Adicionar navegação para tela de configurações
                     },
                   ),
                 ],

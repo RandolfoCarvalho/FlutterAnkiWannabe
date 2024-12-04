@@ -15,12 +15,88 @@ class DeckCardsScreen extends StatefulWidget {
 
 class _DeckCardsScreenState extends State<DeckCardsScreen> {
   final CardController _cardController = CardController();
-  List<model.Card> _deckCards = []; // Usando o alias "model" para acessar o Card do modelo
+  List<model.Card> _deckCards = [];
   bool _isLoading = true;
 
   final _frontTextController = TextEditingController();
   final _backTextController = TextEditingController();
 
+
+  //form para edicao
+  void _showEditCardDialog(model.Card card) {
+  _frontTextController.text = card.frontText;
+  _backTextController.text = card.backText;
+
+  showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: Text('Editar Card'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          TextField(
+            controller: _frontTextController,
+            decoration: InputDecoration(
+              labelText: 'Texto da Frente',
+              hintText: 'Digite o novo texto da frente do card',
+            ),
+          ),
+          TextField(
+            controller: _backTextController,
+            decoration: InputDecoration(
+              labelText: 'Texto do Verso',
+              hintText: 'Digite o novo texto do verso do card',
+            ),
+          ),
+        ],
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: Text('Cancelar'),
+        ),
+        ElevatedButton(
+          onPressed: () async {
+            if (_frontTextController.text.isNotEmpty && 
+                _backTextController.text.isNotEmpty) {
+              try {
+                // Crie um novo objeto Card com as informações atualizadas
+                model.Card updatedCard = model.Card(
+                  id: card.id,
+                  deckId: card.deckId,
+                  frontText: _frontTextController.text,
+                  backText: _backTextController.text,
+                );
+
+                // Chame o método de atualização do card no CardController
+                await _cardController.updateCard(updatedCard);
+
+                // Atualize a lista de cards
+                setState(() {
+                  int index = _deckCards.indexWhere((c) => c.id == card.id);
+                  if (index != -1) {
+                    _deckCards[index] = updatedCard;
+                  }
+                });
+
+                _frontTextController.clear();
+                _backTextController.clear();
+                Navigator.of(context).pop();
+              } catch (e) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Erro ao atualizar card: $e')),
+                );
+              }
+            }
+          },
+          child: Text('Salvar'),
+        ),
+      ],
+    ),
+  );
+}
+
+  
   @override
   void initState() {
     super.initState();
@@ -182,20 +258,31 @@ Widget _buildCardItem(model.Card card, int index) {
           color: Colors.grey[600],
         ),
       ),
-      trailing: IconButton(
-        icon: Icon(Icons.delete, color: Colors.red),
-        onPressed: () async {
-          try {
-            await _cardController.deleteCard(card.id!);
-            setState(() {
-              _deckCards.removeAt(index);
-            });
-          } catch (e) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Erro ao deletar card: $e')),
-            );
-          }
-        },
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Botão de edição
+          IconButton(
+            icon: Icon(Icons.edit, color: Colors.blue),
+            onPressed: () => _showEditCardDialog(card),
+          ),
+          // Botão de exclusão
+          IconButton(
+            icon: Icon(Icons.delete, color: Colors.red),
+            onPressed: () async {
+              try {
+                await _cardController.deleteCard(card.id!);
+                setState(() {
+                  _deckCards.removeAt(index);
+                });
+              } catch (e) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Erro ao deletar card: $e')),
+                );
+              }
+            },
+          ),
+        ],
       ),
     ),
   );
@@ -230,8 +317,11 @@ Widget _buildEmptyState() {
               ),
             ),
             child: Text(
-              'Adicionar Primeiro Card',
-              style: TextStyle(fontSize: 16),
+            'Adicionar Primeiro Card',
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.white,
+            ),
             ),
           ),
         ],

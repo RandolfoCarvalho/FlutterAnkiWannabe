@@ -41,7 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
       if (user != null) {
         // Login bem-sucedido
         print("Login executed");
-        Navigator.pushReplacementNamed(context, '/home');
+        Navigator.of(context).pushReplacementNamed('/home');
       } else {
         // Erro no login
         ScaffoldMessenger.of(context).showSnackBar(
@@ -59,66 +59,112 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Login')),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextField(
-              controller: _emailController,
-              decoration: InputDecoration(
-                labelText: 'Email',
-                border: OutlineInputBorder(),
-              ),
-              keyboardType: TextInputType.emailAddress,
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    backgroundColor: Colors.white,
+    body: Padding(
+      padding: EdgeInsets.all(16.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'Anki wannabe',
+            style: TextStyle(
+              fontSize: 40, 
+              fontWeight: FontWeight.bold, 
+              color: Colors.blueAccent, 
             ),
-            SizedBox(height: 16),
-            TextField(
-              controller: _passwordController,
-              decoration: InputDecoration(
-                labelText: 'Senha',
-                border: OutlineInputBorder(),
-              ),
-              obscureText: true,
+          ),
+          SizedBox(height: 8), 
+          Text(
+            'Entrar',
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.w500, 
+              color: Colors.grey[700],
             ),
-            SizedBox(height: 24),
-            ElevatedButton(
-              onPressed: _signIn,
-              child: Text('Entrar'),
-              style: ElevatedButton.styleFrom(
-                minimumSize: Size(double.infinity, 50),
+          ),
+          SizedBox(height: 40),
+
+          TextField(
+            controller: _emailController,
+            decoration: InputDecoration(
+              labelText: 'Email',
+              labelStyle: TextStyle(color: Colors.blueGrey),
+              hintText: 'Digite seu email',
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0), 
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.blueAccent, width: 2), 
+                borderRadius: BorderRadius.circular(8.0),
               ),
             ),
-            SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text("Não tem uma conta? "),
-                GestureDetector(
-                  onTap: () {
-                    // Redireciona para a tela de registro
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => RegisterScreen()),
-                    );
-                  },
-                  child: Text(
-                    "Cadastre-se",
-                    style: TextStyle(
-                      color: Colors.blue, // Cor do texto para parecer com um link
-                      fontWeight: FontWeight.bold,
-                    ),
+            keyboardType: TextInputType.emailAddress,
+          ),
+          SizedBox(height: 16),
+
+          TextField(
+            controller: _passwordController,
+            decoration: InputDecoration(
+              labelText: 'Senha',
+              labelStyle: TextStyle(color: Colors.blueGrey),
+              hintText: 'Digite sua senha',
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.blueAccent, width: 2), 
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+            ),
+            obscureText: true,
+          ),
+          SizedBox(height: 24),
+
+          // Botão de Login
+          ElevatedButton(
+            onPressed: _signIn,
+            child: Text('Entrar', style: TextStyle(fontSize: 18)),
+            style: ElevatedButton.styleFrom(
+              minimumSize: Size(double.infinity, 50), backgroundColor: Colors.blueAccent, 
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0), 
+              ),
+              textStyle: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          SizedBox(height: 16),
+
+          // Texto de cadastro
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text("Não tem uma conta? "),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => RegisterScreen()),
+                  );
+                },
+                child: Text(
+                  "Cadastre-se",
+                  style: TextStyle(
+                    color: Colors.blueAccent,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-              ],
-            ),
-          ],
-        ),
+              ),
+            ],
+          ),
+        ],
       ),
-    );
-  }
+    ),
+  );
+}
+
 }

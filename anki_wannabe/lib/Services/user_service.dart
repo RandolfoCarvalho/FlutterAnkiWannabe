@@ -90,5 +90,5 @@ class UserService {
     debugPrint("Failed with error '${e.code}': ${e.message}");
     throw Exception(e.message);
   }
-}
+ }
 }
